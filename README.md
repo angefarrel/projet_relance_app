@@ -3,7 +3,7 @@
 ### Cloner le projet en local sur votre machine
 
 ```
-$ git clone https://github.com/angefarrel/projet_relance.git
+$ git clone https://github.com/angefarrel/projet_relance_app.git
 ```
 
 ### Créer un environnement virtuel appelé ```venv``` puis l'activer dans le dossier cloné
