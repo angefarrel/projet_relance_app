@@ -1,0 +1,70 @@
+{% extends 'master.html' %}
+
+{% block title %}RDV manqués{% endblock title %}
+
+{% block content %}
+    
+    <section class="home-section user-section">
+        <div class='d-flex flex-jcb flex-aic'>
+            <div class="section-block__left d-flex flex-jcb flex-aic">
+<!--                <input type="hidden" name="filter-relance-table" value="{% url 'activite_relance:list_site_relance' %}">-->
+                {% csrf_token %}
+<!--                <div class="form-group">-->
+<!--                    <label for="search-relance-start-date">Recherche </label>-->
+<!--                    <input type="text" id="search-relance-by-text" class="form-control" placeholder="Rechercher">-->
+<!--                </div>-->
+
+                <form method="GET" action="" class="d-flex flex-jcb flex-aic">
+
+                    <div class="form-group ml-2">
+                        <label for="code_patient">Code du patient</label>
+                        <input type="text" name="code_patient" id="code_patient" class="form-control">
+                    </div>
+
+                    <div class="form-group ml-2">
+                    <label for="">&nbsp;</label>
+                        <button type="submit" class="button button-gradient"><i class="flaticon-zoom"></i> Recherche</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+        
+        <div class="card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code patient</th>
+                        {% comment %} <th>Numéro patient</th> {% endcomment %}
+                        <th>le motif du RDV</th>
+                        <th>Date de rendez-vous</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if missed_rdv|length == 0 %}
+                        <tr>
+                            <td style="text-align:center">
+                                Aucun rendez-vous manqué
+                            </td>
+                        </tr>
+                    {% else %}
+                    {% for rdv in missed_rdv %}
+                    <tr>   
+
+                        <td>{{ rdv.patient_code }}</td>
+
+                        <td>{{ rdv.motif | upper }}</td>
+
+                        <td>{{ rdv.date_rdv | date }}</td>
+               
+                    </tr>
+                    {% endfor %}
+
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+{% endblock content %}

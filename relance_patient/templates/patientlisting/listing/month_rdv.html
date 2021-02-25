@@ -1,0 +1,147 @@
+{% extends 'master.html' %}
+
+{% block title %}Patients attendus{% endblock title %}
+
+{% block content %}
+
+<section class="home-section user-section">
+<div class="d-flex flex-jcb flex-aic">
+        <div class='section-block'>
+
+            <form method="GET" action="" class="d-flex flex-jcb flex-aic" id="form-patient-listing">
+
+                <div class="form-group">
+                    <label for="listing_rdv">Type de rdv</label>
+                    <select name="listing_rdv" id="listing_rdv" class="form-control" required>
+                        <option value="">Sélectionner le rdv</option>
+                            <option value="arv">ARV</option>
+                            <option value="clinic">CLINIQUE</option>
+                    </select>
+                </div>
+
+		        <div class="form-group ml-2">
+                    <label for="listing_type">Type de listing</label>
+                    <select name="listing_type" id="listing_type" class="form-control" required>
+                        <option value="">Sélectionner le type</option>
+                            <option value="month">Listing du mois</option>
+                            <option value="interval">Listing par intervalle</option>
+                    </select>
+                </div>
+
+                 <div class="form-group ml-2 hide">
+                     <label for="listing_interval_start">Date début</label>
+                     <input type="date" name="listing_interval_start" id="listing_interval_start" class="form-control" required>
+                </div>
+
+                 <div class="form-group ml-2 hide">
+                    <label for="listing_interval_end">Date Fin</label>
+                    <input type="date" name="listing_interval_end" id="listing_interval_end" class="form-control" required>
+                </div>
+              	<div class="form-group  ml-2 hide">
+                    <label for="listing_month">Mois</label>
+                    <select name="listing_month" id="listing_month" class="form-control" required>
+                        <option value="">Sélectionner le mois</option>
+                        {% for month in list_of_month %}
+                            <option value="{{month.0 | upper }}">{{ month.1 | upper  }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group ml-2 hide">
+                    <label for="listing_year">Année</label>
+                    <select name="listing_year" id="listing_year" class="form-control" required>
+                        <option value="">Sélectionner l'année</option>
+                        {% for year in years %}
+                            <option {% if year == cur_year %}selected{% endif %} value="{{year}}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+               
+                <div class="form-group ml-4">
+                    <label for="">&nbsp;</label>
+                    <button type="submit" class="button button-gradient"><i class="flaticon-shuffle"></i> Générer</button>
+                </div>
+                
+            </form>
+     
+        </div>
+        <div class="div">
+            {% comment %} <a href="{% url 'patientlisting:month_rdv' %}" class="button button-gradient"><i class="las la-undo-alt" style="font-size:22px;"></i> Réinitialiser</a> {% endcomment %}
+            {% if page_obj %}
+            <a href="{% url 'patientlisting:pl_export_month_listing' %}" class="ml-4 button button-gradient"><i class="flaticon-share"></i> Exporter</a>
+            {% endif %}
+        </div>
+    </div>
+        <div class="card">
+        <div class="table-fixed">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code patient</th>
+                        <th>Date enregistrement</th>
+                        <th>Sexe</th>
+			            <th>Age</th>
+                        <th>Régime</th>
+                        <th>Date de rdv</th>
+                        {% comment %}
+                        <th>Contact</th>
+                        <th>Date RDV</th>
+                        {% endcomment %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% if not page_obj %}
+                        <tr>
+                            <td style="text-align:center">
+                                Aucun rendez-vous
+                            </td>
+                        </tr>
+                    {% else %}
+                    {% for row in page_obj %}
+                    <tr>
+
+                        <td>{{ row.code_patient | upper }}</td>
+
+                        <td>{{ row.date_enregistrement_patient | date:'j/m/Y' }}</td>
+
+                        <td>{{ row.sexe | upper }}</td>
+
+			            <td>{{ row.age | upper }} ans</td>
+
+                        <td>{{ row.regime | upper}}</td>
+
+                        <td>{{ row.proch_rdv | date }}</td>
+{% comment %}
+                        <td>{{ rdv.contact }}</td>
+
+                        <td>{{ rdv.date_rdv }}</td>   
+{% endcomment %}                    
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page=1"><i class="las la-angle-double-left"></i></a>
+                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.previous_page_number }}"><i class="las la-angle-left"></i></a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.next_page_number }}"><i class="las la-angle-right"></i></a>
+                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.paginator.num_pages }}"><i class="las la-angle-double-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+        
+</section>
+
+
+{% endblock content %}

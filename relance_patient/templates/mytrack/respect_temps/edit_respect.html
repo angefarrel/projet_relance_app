@@ -1,0 +1,58 @@
+{% extends 'master.html' %}
+
+{% block title %}Ajout de relance{% endblock title %}
+
+{% block content %}
+    
+    <section class="home-section user-section">
+
+        <div class="user-section-wrapper">
+        <div class="card">
+            <form action="{% url 'mytrack:edit_respect' respect.code_respect %}" method="post" class="form-edit-respect">
+                {% csrf_token %}
+
+                <input type="hidden" name="code_respect" value="{{ respect.code_respect }}">
+
+                <div class="form-group">
+                    <label for="last_rdv">Ancienne date de rendez-vous</label>
+                    <input type="date" name="last_rdv" id="last_rdv" class="form-control" placeholder="ancienne date de rendez-vous" value="{{respect.last_rdv}}" required>
+                    <span class="form-error relance_date-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="date_venue">Date de venue</label>
+                    <input type="date" name="date_venue" id="date_venue" class="form-control" placeholder="Date de relance" value="{{respect.date_venue}}" required>
+                    <span class="form-error relance_date-error"></span>
+                </div>
+
+                 <div class="form-group">
+                    <label for="patient_code">Code patient</label>
+                    <input type="text" name="patient_code" id="patient_code" class="form-control" placeholder="XXXX/XX/XX/XXXX" value="{{respect.code_patient}}" required>
+                    <span class="form-error patient_code-error"></span>
+                </div>
+
+                 <div class="form-group">
+                    <label for="motif">Motif de Rendez-vous</label>
+                    <select name="motif" id="motif" class="form-control"  multiple size = "3" required>
+                        <option value="{{respect.reason}}" selected hidden >{{respect.reason}}</option>
+                        {% for motif in motif %}
+                        <option value="{{motif}}">{{ motif | upper }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="form-error relance_reason-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="respect_comment">Commentaire</label>
+                    <textarea name="respect_comment" id="respect_comment" placeholder="Commentaire" class="form-control" value="{{respect.comment}}"></textarea>
+                    <span class="form-error relance_comment-error"></span>
+                </div>
+                <button type="submit" class="button button-gradient"><i class="flaticon-floppy-disk"></i> Enregistrer</button>
+
+            </form>
+        </div>
+
+        </div>
+    </section>
+
+{% endblock content %}

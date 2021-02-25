@@ -1,0 +1,23 @@
+{% extends 'master.html' %}
+
+{% block title %}Code Patient{% endblock title %}
+
+{% block content %}
+     <section class="home-section user-section">
+
+        <div class="user-section-wrapper">
+        <div class="card">
+            <form action="{% url 'mytrack:ajout_rdv' %}" method="post" class="form-add-rdv">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="patient_code">Code patient</label>
+                    <input type="text" name="patient_code" id="patient_code" class="form-control" placeholder="XXXX/XX/XX/XXXX">
+                    <span class="form-error patient_code-error"></span>
+                </div>
+                </form>
+        </div>
+
+        </div>
+    </section>
+{% endblock content %}

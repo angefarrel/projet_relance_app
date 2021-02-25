@@ -1,0 +1,22 @@
+*.pyc
+*~
+*.whl
+/.vscode
+!*__pycache__
+myEnv
+venv
+.env
+/.idea
+/.vscode
+__pycache__/
+.DS_store
+.idea
+relance_patient/staticfiles
+relance_patient/media
+#JS plugins
+*.json
+node_modules
+# django migrations 
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
