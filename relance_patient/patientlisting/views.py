@@ -173,11 +173,6 @@ def waited_patient(request):
     session_data = []
     start_date = None
     end_date = None
-    type_list = None
-    if request.GET.get('listing_rdv')=='clinic':
-        type_list=5096
-    elif request.GET.get('listing_rdv')=='arv':
-        type_list=165040
 
     if request.GET.get('listing_type')=='interval':
         period = dt.datetime.strptime(request.GET['listing_interval_start'],'%Y-%m-%d').strftime("%d-%m-%Y") + "/" + dt.datetime.strptime(request.GET['listing_interval_end'],'%Y-%m-%d').strftime("%d-%m-%Y")
@@ -190,15 +185,12 @@ def waited_patient(request):
         start_date, end_date = get_month_limit(year, month)
 
     if start_date and end_date:
-        data=request.session['data_used']['data']
-        module_data = pd.json_normalize(data, record_path =['rows'], meta =['uuid','metadata','definition', 'links', 'resourceVersion'], meta_prefix='', record_prefix='')
-        data0 = module_data[["Code_patient", "regim_lib", "date_enregistrement_patient", "Nombre_jour_traitement", "gender", "age_revolu", "date_rdv", "concept_id"]]
-        data0.columns=['code_patient', 'regime','date_enregistrement_patient', "days_treat",'sexe','age','proch_rdv',"concept_id"]
-        for i, row in data0.iterrows():
-            if start_date<=dt.datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date()<=end_date and row['concept_id']==type_list:
+        data=pd.DataFrame(json.loads(request.session['data_used']['data']))
+        for i,row in data.iterrows():
+            if start_date<=dt.datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date()<=end_date:
                 session_data.append(row.to_dict())
                 row['proch_rdv'] = dt.datetime.strptime(row['proch_rdv'].split('/')[0], '%Y-%m-%d').date()
-                row['date_enregistrement_patient'] = dt.datetime.strptime(row['date_enregistrement_patient'].split('/')[0], '%Y-%m-%d').date()
+                row['rupture_arv'] = dt.datetime.strptime(row['rupture_arv'].split('/')[0], '%Y-%m-%d').date()
                 rdv.append(row.to_dict())  
     if session_data:
         rdv_cal=sorted(session_data, key=lambda x:x['proch_rdv'], reverse=True)
@@ -229,27 +221,18 @@ def missed_rdv_patient(request):
     period = ""
     rdv = []
     session_data = []
-    type_rdv = None 
-
-    if request.GET.get('listing_rdv') == 'clinic':
-        type_rdv = 5096
-    elif request.GET.get('listing_rdv') == 'arv':
-        type_rdv = 165040
 
     if request.GET.get('listing_month') or request.GET.get('listing_year'):
         month = int(request.GET['listing_month']) or now.month
         year = int(request.GET['listing_year']) or now.year
         period = str([k for k in get_year_month() if k[0]==month][0][1]) + " " + str(year)
         start_date, end_date = get_month_limit(year, month)
-        data=request.session['data_used']['data']
-        module_data = pd.json_normalize(data, record_path =['rows'], meta =['uuid','metadata','definition', 'links', 'resourceVersion'], meta_prefix='', record_prefix='')
-        data0 = module_data[["Code_patient", "regim_lib", "date_enregistrement_patient", "Nombre_jour_traitement", "gender", "age_revolu", "date_rdv", "concept_id"]]
-        data0.columns=['code_patient', 'regime','date_enregistrement_patient', "days_treat",'sexe','age','proch_rdv',"concept_id"]
-        for i, row in data0.iterrows():
-            if start_date<=dt.datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date()<=end_date and now>dt.datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date() and row['concept_id'] == type_rdv:
+        data=pd.DataFrame(json.loads(request.session['data_used']['data']))
+        for i,row in data.iterrows():
+            if start_date<=dt.datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date()<=end_date and now>dt.datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date():
                 session_data.append(row.to_dict())
                 row['proch_rdv'] = dt.datetime.strptime(row['proch_rdv'].split('/')[0], '%Y-%m-%d').date()
-                row['date_enregistrement_patient'] = dt.datetime.strptime(row['date_enregistrement_patient'].split('/')[0], '%Y-%m-%d').date()
+                row['rupture_arv'] = dt.datetime.strptime(row['rupture_arv'].split('/')[0], '%Y-%m-%d').date()
                 rdv.append(row.to_dict())  
     if session_data:
         rdv_cal=sorted(session_data, key=lambda x:x['proch_rdv'], reverse=True)
@@ -276,24 +259,15 @@ def patient_PVD(request):
     now = dt.date.today()
     losted_patient = []
     session_data = []
-    type_rdv = None 
-
-    if request.GET.get('listing_rdv') == 'clinic':
-        type_rdv = 5096
-    elif request.GET.get('listing_rdv') == 'arv':
-        type_rdv = 165040
 
     if request.GET.get('type_losted'):
         days_losted = int(request.GET.get('type_losted'))
-        data=request.session['data_used']['data']
-        module_data = pd.json_normalize(data, record_path =['rows'], meta =['uuid','metadata','definition', 'links', 'resourceVersion'], meta_prefix='', record_prefix='')
-        data0 = module_data[["Code_patient", "regim_lib", "date_enregistrement_patient", "Nombre_jour_traitement", "gender", "age_revolu", "date_rdv", "concept_id"]]
-        data0.columns=['code_patient', 'regime','date_enregistrement_patient', "days_treat",'sexe','age','proch_rdv',"concept_id"]
-        for i, row in data0.iterrows():
-            if datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date()<=now-timedelta(days=days_losted) and row['concept_id']==type_rdv:
+        data=pd.DataFrame(json.loads(request.session['data_used']['data']))
+        for i,row in data.iterrows():
+            if datetime.strptime(row['proch_rdv'],'%Y-%m-%d').date()<=now-timedelta(days=days_losted):
                 session_data.append(row.to_dict())
                 row['proch_rdv'] = dt.datetime.strptime(row['proch_rdv'].split('/')[0], '%Y-%m-%d').date()
-                row['date_enregistrement_patient'] = dt.datetime.strptime(row['date_enregistrement_patient'].split('/')[0], '%Y-%m-%d').date()
+                row['rupture_arv'] = dt.datetime.strptime(row['rupture_arv'].split('/')[0], '%Y-%m-%d').date()
                 losted_patient.append(row.to_dict())
 
     if session_data:

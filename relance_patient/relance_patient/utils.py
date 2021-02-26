@@ -1,4 +1,4 @@
-import os, calendar, locale, weasyprint, requests, activite_relance as ar
+import os, calendar, json, locale, weasyprint, requests, activite_relance as ar, datetime as dt
 from datetime import datetime
 from django.http import HttpResponse, Http404
 from django.template.loader import get_template, render_to_string
@@ -74,4 +74,11 @@ def converter(o):
 
 def download_data(url:str,login:tuple):
     r=requests.get(url, auth=login)
-    return r.json()
+    all_data=r.json()
+    data=[{'code_patient':i['Identifiant'],
+      'sexe':i['Sexe'],
+      'age':i['Age'],
+      'regime':i['RegimeDispensation'],
+      'rupture_arv':(dt.datetime.strptime(i['DATE(DateDerniereDispensation)'], "%Y-%m-%d")+dt.timedelta(days=i['nbreJourTTT'])).strftime("%Y-%m-%d"),
+      'proch_rdv':i['DATE(RDV.DateProchainRDV)'],} for i in all_data['rows']]
+    return json.dumps(data)

@@ -93,10 +93,7 @@ class ListRDV(APIView):
         return Response({'type': 'success', 'msg': 'génération de listing éffectué'}, status=200)
 
 def count_patient(request):
-    module_data = pd.json_normalize(download_data(base.DATA_URL,base.AUTH_SIGDEP), record_path =['rows'], meta =['uuid','metadata','definition', 'links', 'resourceVersion'], meta_prefix='', record_prefix='')
-    data = module_data[["Code_patient", "regim_lib", "date_enregistrement_patient", "Nombre_jour_traitement", "gender", "age_revolu", "date_rdv", "concept_id"]]
-    data.columns=['code_patient', 'regime','date_enregistrement_patient', "days_treat",'sexe','age','proch_rdv',"concept_id"]
-    count=len([line.to_dict() for i, line in data.iterrows()])
+    count=len(json.loads(download_data(base.DATA_URL,base.AUTH_SIGDEP)))
     return JsonResponse({
         'type': 'success', 
         'status': 200, 

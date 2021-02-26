@@ -13,23 +13,7 @@
 
             <form method="GET" action="" class="ml-4 d-flex flex-jcb flex-aic">
                 <div class="form-group">
-                    <label for="listing_rdv">Type de rdv</label>
-                    <select name="listing_rdv" id="listing_rdv" class="form-control" required>
-                        <option value="">Sélectionner le rdv</option>
-                            <option value="arv">ARV</option>
-                            <option value="clinic">CLINIQUE</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="type_losted">Nombre de jours manqués</label>
-                   {% comment %}
-                    <select name="type_losted" id="type_losted" class="form-control">
-                        <option value="">Sélectionner le type</option>
-                        {% for type_lost in type_lost_patient %}
-                            <option value="{{type_lost}}">{{ type_lost }}</option>
-                        {% endfor %}
-                    </select>
-                    {% endcomment %}
                     <input type="number" min="0" name="type_losted" id="type_losted" class="form-control" required>
                 </div>
                
@@ -57,14 +41,13 @@
                 <thead>
                     <tr>
                         <th>Code patient</th>
-                        <th>Date enregistrement</th>
                         <th>Sexe</th>
 			            <th>Age</th>
                         <th>Régime</th>
-                        <th>Date de rdv</th>
+                        <th>Date rupture ARV</th>
+                        <th>Date RDV clinique</th>
                         {% comment %}
                         <th>Contact</th>
-                        <th>Date RDV</th>
                         {% endcomment %}
                     </tr>
                 </thead>
@@ -81,13 +64,13 @@
 
                         <td>{{ row.code_patient | upper }}</td>
 
-                        <td>{{ row.date_enregistrement_patient | upper }}</td>
-
                         <td>{{ row.sexe | upper }}</td>
 
 			            <td>{{ row.age | upper }} ans</td>
 
                         <td>{{ row.regime | upper}}</td>
+
+                        <td>{{ row.rupture_arv | date }}</td>
 
                         <td>{{ row.proch_rdv | date }}</td>
 {% comment %}

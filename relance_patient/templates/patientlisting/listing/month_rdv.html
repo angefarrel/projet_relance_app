@@ -10,15 +10,6 @@
 
             <form method="GET" action="" class="d-flex flex-jcb flex-aic" id="form-patient-listing">
 
-                <div class="form-group">
-                    <label for="listing_rdv">Type de rdv</label>
-                    <select name="listing_rdv" id="listing_rdv" class="form-control" required>
-                        <option value="">Sélectionner le rdv</option>
-                            <option value="arv">ARV</option>
-                            <option value="clinic">CLINIQUE</option>
-                    </select>
-                </div>
-
 		        <div class="form-group ml-2">
                     <label for="listing_type">Type de listing</label>
                     <select name="listing_type" id="listing_type" class="form-control" required>
@@ -78,14 +69,13 @@
                 <thead>
                     <tr>
                         <th>Code patient</th>
-                        <th>Date enregistrement</th>
                         <th>Sexe</th>
 			            <th>Age</th>
                         <th>Régime</th>
-                        <th>Date de rdv</th>
+                        <th>Date rupture ARV</th>
+                        <th>Date RDV clinique</th>
                         {% comment %}
                         <th>Contact</th>
-                        <th>Date RDV</th>
                         {% endcomment %}
                     </tr>
                 </thead>
@@ -102,13 +92,13 @@
 
                         <td>{{ row.code_patient | upper }}</td>
 
-                        <td>{{ row.date_enregistrement_patient | date:'j/m/Y' }}</td>
-
                         <td>{{ row.sexe | upper }}</td>
 
 			            <td>{{ row.age | upper }} ans</td>
 
                         <td>{{ row.regime | upper}}</td>
+
+                        <td>{{ row.rupture_arv | date }}</td>
 
                         <td>{{ row.proch_rdv | date }}</td>
 {% comment %}
@@ -126,8 +116,8 @@
         <div class="pagination">
             <span class="step-links">
                 {% if page_obj.has_previous %}
-                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page=1"><i class="las la-angle-double-left"></i></a>
-                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.previous_page_number }}"><i class="las la-angle-left"></i></a>
+                    <a class="button button-gradient" href="?listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page=1"><i class="las la-angle-double-left"></i></a>
+                    <a class="button button-gradient" href="?listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.previous_page_number }}"><i class="las la-angle-left"></i></a>
                 {% endif %}
 
                 <span class="current">
@@ -135,8 +125,8 @@
                 </span>
 
                 {% if page_obj.has_next %}
-                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.next_page_number }}"><i class="las la-angle-right"></i></a>
-                    <a class="button button-gradient" href="?listing_rdv={{request.GET.listing_rdv}}&listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.paginator.num_pages }}"><i class="las la-angle-double-right"></i></a>
+                    <a class="button button-gradient" href="?listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.next_page_number }}"><i class="las la-angle-right"></i></a>
+                    <a class="button button-gradient" href="?listing_type={{request.GET.listing_type}}&listing_interval_start={{request.GET.listing_interval_start}}&listing_interval_end={{request.GET.listing_interval_end}}&listing_month={{ request.GET.listing_month }}&listing_year={{ request.GET.listing_year }}&page={{ page_obj.paginator.num_pages }}"><i class="las la-angle-double-right"></i></a>
                 {% endif %}
             </span>
         </div>

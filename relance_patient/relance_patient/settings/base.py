@@ -186,4 +186,4 @@ DASHBOARD_URL = '/'
 
 # CONNEXION PARMS
 AUTH_SIGDEP = (os.getenv('USER_NAME'),os.getenv('PASSWORD'))
-DATA_URL = "https://siteperformance.hopto.org/openmrs/ws/rest/v1/reportingrest/dataSet/91a5b913-217e-4c1d-932d-6c9db1a634c9"
+DATA_URL = os.getenv('URL_API')
