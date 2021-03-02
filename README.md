@@ -11,7 +11,7 @@ $ git clone https://github.com/angefarrel/projet_relance_app.git
 * Mac OS & Linux
 
 ```
-$ cd scheduling_appointment
+$ cd projet_relance_app
 $ python3 -m venv venv
 $ source venv/bin/activate
 ```

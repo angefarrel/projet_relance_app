@@ -97,9 +97,9 @@ WSGI_APPLICATION = 'relance_patient.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bd_appointment',
-        'USER': 'root',
-        'PASSWORD':'password',
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD':os.getenv('PASSWORD_DB'),
         'HOST':'127.0.0.1',
         'PORT': 3306,
     },

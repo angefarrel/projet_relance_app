@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 
-    // Set user account active 
+    // Set user account active
     if(setUserActive) {
         setUserActive.addEventListener("click", function(e) {
             e.preventDefault()
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function(){
         })
     }
 
-    // Show user info modal 
+    // Show user info modal
     if(showUser) {
 
         // Delete user
@@ -437,9 +437,9 @@ document.addEventListener("DOMContentLoaded", function(){
         closeModal.addEventListener("click", function(e) {
             e.preventDefault()
             showUserModal.style.display = "none"
-        }) 
+        })
     }
-    
+
     // Remove error mode on focus
     document.querySelectorAll(".form-create-user input").forEach(elment => {
         elment.addEventListener("focus", () => {
