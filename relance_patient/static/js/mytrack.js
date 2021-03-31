@@ -350,4 +350,37 @@ document.addEventListener("DOMContentLoaded", function(){
                         }
                     })
                 })
+
+        // const formSearchIndex=document.querySelector(".form-search-index")
+        // const searchIndex=document.querySelector(".form-search-index #code_patient")
+        // // const formSearchIndexCsrfToken=document.querySelector(".form-search-index [type='hidden']")
+        // if(formSearchIndex){
+        //     formSearchIndex.addEventListener("submit", function(e){
+        //         e.preventDefault();
+
+        //         let constraints={};
+        //         let validators=[]
+        //         constraints={
+        //             patient_code:{
+        //                 presence:{message:"est requis !", allowEmpty:false},
+        //                 format:{
+        //                     pattern:"[0-9]{4}[\/][0-9]{2}[\/][0-9]{2}[\/][0-9]{5}",
+        //                     // flags="gi",
+        //                     message:"n'est pas correct"
+        //                 }
+        //             }
+        //         }
+        //         validators=validate({
+        //             patient_code:searchIndex.value,
+        //         }, constraints)
+        //         console.log(validators)
+        //         if(validators){
+        //             for(const error in validators){
+        //                 if(error === "patient_code"){
+        //                     searchIndex.classList.add("error")
+        //                     searchIndex.nextElementSibling.textContent = validators[error][0]
+        //                 }}
+        //         }
+        //     })
+        // }
    })

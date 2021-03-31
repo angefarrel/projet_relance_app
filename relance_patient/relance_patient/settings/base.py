@@ -103,15 +103,6 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT': 3306,
     },
-
-    # 'sigdep': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'openmrs',
-    #     'USER': 'powerbi_readonly',
-    #     'PASSWORD':'txsxFa4dnNCHu8WgDt',
-    #     'HOST':'20.185.232.96',
-    #     'PORT':'3306',
-    # }
 }
 
 

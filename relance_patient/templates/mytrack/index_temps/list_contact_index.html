@@ -7,18 +7,13 @@
     <section class="home-section user-section">
         <div class='d-flex flex-jcb flex-aic'>
             <div class="section-block__left d-flex flex-jcb flex-aic">
-<!--                <input type="hidden" name="filter-relance-table" value="{% url 'activite_relance:list_site_relance' %}">-->
                 {% csrf_token %}
-<!--                <div class="form-group">-->
-<!--                    <label for="search-relance-start-date">Recherche </label>-->
-<!--                    <input type="text" id="search-relance-by-text" class="form-control" placeholder="Rechercher">-->
-<!--                </div>-->
 
-                <form method="GET" action="" class="d-flex flex-jcb flex-aic">
+                <form method="GET" action="" class="d-flex flex-jcb flex-aic" class="form-search-index">
 
                     <div class="form-group ml-2">
                         <label for="code_patient">Code du patient</label>
-                        <input type="text" name="code_patient" id="code_patient" class="form-control">
+                        <input type="text" name="code_patient" id="code_patient" class="form-control" pattern="[0-9]{4}[\/][0-9]{2}[\/][0-9]{2}[\/][0-9]{5}" required>
                     </div>
 
                     <div class="form-group ml-2">
@@ -62,8 +57,6 @@
 
                         <td>{{ index.patient_code }}</td>
 
-                        {% comment %} <td>{{ index.patient_contact }}</td> {% endcomment %}
-
                         <td>{{ index.contact_code | upper }}</td>
 
                         <td>{{ index.type_contact | upper }}</td>
@@ -92,23 +85,6 @@
                 </tbody>
             </table>
         </div>
-        {% comment %} <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a class="button button-gradient" href="?page=1"><i class="las la-angle-double-left"></i></a>
-                    <a class="button button-gradient" href="?page={{ page_obj.previous_page_number }}"><i class="las la-angle-left"></i></a>
-                {% endif %}
-
-                <span class="current">
-                    Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}.
-                </span>
-
-                {% if page_obj.has_next %}
-                    <a class="button button-gradient" href="?page={{ page_obj.next_page_number }}"><i class="las la-angle-right"></i></a>
-                    <a class="button button-gradient" href="?page={{ page_obj.paginator.num_pages }}"><i class="las la-angle-double-right"></i></a>
-                {% endif %}
-            </span>
-        </div> {% endcomment %}
     </section>
 
 {% endblock content %}
